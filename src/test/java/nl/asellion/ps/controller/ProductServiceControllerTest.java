@@ -12,18 +12,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import nl.asellion.ps.exception.ExceptionController;
 import nl.asellion.ps.exception.ProductServiceException;
 import nl.asellion.ps.model.Product;
 import nl.asellion.ps.service.ProductService;
@@ -40,7 +46,19 @@ public class ProductServiceControllerTest {
     @InjectMocks
     private ProductServiceController productServiceController;
 
+    @Autowired
     private MockMvc mockMvc;
+
+//    public ProductServiceControllerTest(MockMvc mockMvc) {
+//        this.mockMvc = mockMvc;
+//        this.mockMvc = MockMvcBuilders.standaloneSetup(productServiceController).setControllerAdvice(ExceptionController.class).build();
+//    }
+
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(productServiceController).setControllerAdvice(ExceptionController.class).build();
+    }
 
     @Mock
     public ProductService productService;
@@ -50,6 +68,7 @@ public class ProductServiceControllerTest {
         //given
         List<Product> productList = new ArrayList<>();
         when(productService.findAll()).thenReturn(productList);
+
 
         //when
         mockMvc.perform(get("/api/products"))
@@ -64,16 +83,17 @@ public class ProductServiceControllerTest {
     @Test
     public void getProductById() throws Exception {
         //given
-        Product product = Product.builder().build();
+        Product product = Product.builder().id(1L).name("Apple EarPods")
+                .currentPrice(BigDecimal.valueOf(16.44)).lastUpdate(LocalDateTime.now()).build();
         when(productService.findById(product.getId())).thenReturn(product);
 
         //when
         mockMvc.perform(get("/api/products/{id}", product.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id", is("1")))
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Apple EarPods")))
-                .andExpect(jsonPath("$.currentPrice", is("16.44")))
+                .andExpect(jsonPath("$.currentPrice", is(16.44)))
                 .andExpect(jsonPath("$.lastUpdate", notNullValue()));
 
         //then
