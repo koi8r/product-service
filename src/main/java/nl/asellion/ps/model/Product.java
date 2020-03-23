@@ -52,5 +52,5 @@ public final class Product {
     @Column(name = "last_update", nullable = false)
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
-    
+
 }
