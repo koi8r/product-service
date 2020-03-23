@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Alexander Kirillov
@@ -28,6 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode
+@ToString
 public final class Product {
 
     @Id
@@ -42,7 +44,7 @@ public final class Product {
 
     @NotNull
     @Column(name = "current_price", precision = 10, scale = 2, nullable = false)
-    private BigDecimal current_price;
+    private BigDecimal currentPrice;
 
     @NotNull
     @Column(name = "last_update", nullable = false)

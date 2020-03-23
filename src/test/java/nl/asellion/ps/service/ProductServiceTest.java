@@ -4,18 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import nl.asellion.ps.model.Product;
 
 /**
  * @author Alexander Kirillov
  */
-
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class ProductServiceTest {
 
     @Autowired
@@ -24,25 +29,28 @@ public class ProductServiceTest {
     @Test
     public void testFindAll() {
         //given
-        final List<Product> expected = Arrays.asList(Product.builder().build(), Product.builder().build());
+        final int size = 5;
 
         //when
         final List<Product> actual = productService.findAll();
 
         //then
-        assertEquals(expected, actual);
+        assertEquals(size, actual.size());
     }
 
     @Test
     public void testFindById() {
         //given
-        final Product expected = Product.builder().build();
+        final Product expected = Product.builder().id(1L).name("Apple EarPods")
+                .currentPrice(BigDecimal.valueOf(16.44)).lastUpdate(LocalDateTime.now()).build();
 
         //when
         final Product actual = productService.findById(1l);
 
         //then
-        assertEquals(expected, actual);
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getCurrentPrice(), actual.getCurrentPrice());
+        assertEquals(expected.getName(), actual.getName());
 
     }
 
