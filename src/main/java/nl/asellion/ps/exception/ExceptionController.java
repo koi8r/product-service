@@ -35,7 +35,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorData> handleGlobalException(HttpServerErrorException e) {
         final ErrorData error = createAnError(e.getStatusCode().value(), e.getMessage());
         log.error("Service is unavailable: {}", e.getMessage());
-        return new ResponseEntity<>(e.getStatusCode());
+        return new ResponseEntity<>(error, e.getStatusCode());
     }
 
     @ExceptionHandler(ProductServiceException.class)
