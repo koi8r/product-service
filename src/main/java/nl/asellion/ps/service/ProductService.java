@@ -4,6 +4,10 @@ import java.util.List;
 
 import nl.asellion.ps.model.Product;
 
+/**
+ * @author Alexander Kirillov
+ */
+
 public interface ProductService {
 
     Product findById(Long id);
