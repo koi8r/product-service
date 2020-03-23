@@ -70,7 +70,8 @@ public class ProductServiceTest {
     @Test
     public void testCreate() {
         //given
-        final Product product = Product.builder().build();
+        final Product product = Product.builder().name("Whey Protein")
+                .currentPrice(BigDecimal.valueOf(25.99)).lastUpdate(LocalDateTime.now()).build();
 
         //when
         final Product createdEntity = productService.create(product);
@@ -85,31 +86,34 @@ public class ProductServiceTest {
     @Test
     public void testUpdate() {
         //given
-        final Product expected = Product.builder().build();
+        final Product expected = Product.builder().id(2L).name("Apple Macbook Air (2020)")
+                .currentPrice(BigDecimal.valueOf(1010.99)).build();
 
         //when
         final Product actual = productService.update(expected);
 
         //then
         assertNotNull(actual);
-        assertEquals(expected, actual);
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getCurrentPrice(), actual.getCurrentPrice());
+        assertNotNull(actual.getLastUpdate());
 
     }
 
     @Test
     public void testDelete() {
         //given
-        final Product expected = Product.builder().build();
+        final int size = 5;
 
         //when
-        productService.delete(1L);
-        final Product actualProduct = productService.findById(1L);
+        productService.delete(6L);
+        final Product actualProduct = productService.findById(6L);
         final List<Product> actualProductList = productService.findAll();
 
         //then
         assertNull(actualProduct);
         assertNotNull(actualProductList);
-        assertEquals(4, actualProductList.size());
+        assertEquals(size, actualProductList.size());
 
     }
 

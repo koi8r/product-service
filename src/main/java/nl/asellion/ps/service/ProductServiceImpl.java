@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.asellion.ps.model.Product;
 import nl.asellion.ps.repository.ProductRepository;
 
@@ -12,7 +15,9 @@ import nl.asellion.ps.repository.ProductRepository;
  * @author Alexander Kirillov
  */
 
+@Slf4j
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -34,17 +39,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Product create(Product product) {
-        return null;
+        return productRepository.save(product);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Product update(Product product) {
-        return null;
+        final Optional<Product> foundProductById = productRepository.findById(product.getId());
+        foundProductById.orElseThrow(IllegalStateException::new);
+
+        final Product productToUpdate = foundProductById.get().toBuilder().name(product.getName())
+                .currentPrice(product.getCurrentPrice()).build();
+
+        return productRepository.save(productToUpdate);
     }
 
     @Override
     public void delete(Long id) {
+        final Optional<Product> foundProductById = productRepository.findById(id);
+        foundProductById.orElseThrow(IllegalStateException::new);
+        productRepository.deleteById(id);
 
     }
 }

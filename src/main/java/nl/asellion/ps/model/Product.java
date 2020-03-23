@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -48,6 +50,7 @@ public final class Product {
 
     @NotNull
     @Column(name = "last_update", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime lastUpdate;
-
+    
 }
