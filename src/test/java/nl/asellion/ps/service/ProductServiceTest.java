@@ -2,18 +2,19 @@ package nl.asellion.ps.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import nl.asellion.ps.exception.ProductServiceException;
 import nl.asellion.ps.model.Product;
 
 /**
@@ -59,11 +60,8 @@ public class ProductServiceTest {
         //given
         final Long id = Long.MAX_VALUE;
 
-        //when
-        final Product actual = productService.findById(id);
-
-        //then
-        assertNull(actual);
+        //when //then
+        Assertions.assertThrows(ProductServiceException.class, () -> productService.findById(id));
 
     }
 
@@ -107,11 +105,10 @@ public class ProductServiceTest {
 
         //when
         productService.delete(6L);
-        final Product actualProduct = productService.findById(6L);
         final List<Product> actualProductList = productService.findAll();
 
         //then
-        assertNull(actualProduct);
+        Assertions.assertThrows(ProductServiceException.class, () -> productService.findById(6L));
         assertNotNull(actualProductList);
         assertEquals(size, actualProductList.size());
 
