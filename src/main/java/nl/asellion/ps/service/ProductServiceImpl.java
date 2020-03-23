@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.asellion.ps.exception.ProductServiceException;
 import nl.asellion.ps.model.Product;
 import nl.asellion.ps.repository.ProductRepository;
 
@@ -29,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(Long id) {
         final Optional<Product> product = productRepository.findById(id);
-        return product.orElse(null);
+        return product.orElseThrow(() -> new ProductServiceException("Product wasn't found"));
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Product update(Product product) {
         final Optional<Product> foundProductById = productRepository.findById(product.getId());
-        foundProductById.orElseThrow(IllegalStateException::new);
+        foundProductById.orElseThrow(() -> new ProductServiceException("Product wasn't found"));
 
         final Product productToUpdate = foundProductById.get().toBuilder().name(product.getName())
                 .currentPrice(product.getCurrentPrice()).build();
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long id) {
         final Optional<Product> foundProductById = productRepository.findById(id);
-        foundProductById.orElseThrow(IllegalStateException::new);
+        foundProductById.orElseThrow(() -> new ProductServiceException("Product wasn't found"));
         productRepository.deleteById(id);
 
     }
