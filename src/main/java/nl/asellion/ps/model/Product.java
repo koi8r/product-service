@@ -21,6 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
+ * Product entity
+ *
  * @author Alexander Kirillov
  */
 

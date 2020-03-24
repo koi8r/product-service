@@ -9,6 +9,8 @@ import nl.asellion.ps.dto.ProductDto;
 import nl.asellion.ps.model.Product;
 
 /**
+ * Mapper from Product to ProductDto
+ *
  * @author Alexander Kirillov
  */
 
@@ -22,5 +24,5 @@ public interface ProductMapper {
             @Mapping(source = "currentPrice", target = "currentPrice"),
             @Mapping(source = "lastUpdate", target = "lastUpdate"),
     })
-    ProductDto map(Product account);
+    ProductDto fromProduct(Product account);
 }

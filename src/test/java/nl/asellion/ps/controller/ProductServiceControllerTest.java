@@ -29,13 +29,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import nl.asellion.ps.exception.ExceptionController;
-import nl.asellion.ps.exception.ProductServiceException;
+import nl.asellion.ps.exception.ProductServiceExceptionHandlerTest;
 import nl.asellion.ps.model.Product;
 import nl.asellion.ps.service.ProductService;
 
 
 /**
+ * Unit tests for ProductServiceController
+ *
  * @author Alexander Kirillov
  */
 
@@ -46,18 +47,11 @@ public class ProductServiceControllerTest {
     @InjectMocks
     private ProductServiceController productServiceController;
 
-    @Autowired
     private MockMvc mockMvc;
-
-//    public ProductServiceControllerTest(MockMvc mockMvc) {
-//        this.mockMvc = mockMvc;
-//        this.mockMvc = MockMvcBuilders.standaloneSetup(productServiceController).setControllerAdvice(ExceptionController.class).build();
-//    }
-
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(productServiceController).setControllerAdvice(ExceptionController.class).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(productServiceController).setControllerAdvice(ProductServiceExceptionHandlerTest.class).build();
     }
 
     @Mock
@@ -68,7 +62,6 @@ public class ProductServiceControllerTest {
         //given
         List<Product> productList = new ArrayList<>();
         when(productService.findAll()).thenReturn(productList);
-
 
         //when
         mockMvc.perform(get("/api/products"))
@@ -99,21 +92,6 @@ public class ProductServiceControllerTest {
         //then
         verify(productService, times(1)).findById(product.getId());
         verifyNoMoreInteractions(productService);
-
-    }
-
-    @Test
-    public void getProductByIdNotFound() throws Exception {
-        //given
-        when(productService.findById(Long.MAX_VALUE)).thenThrow(ProductServiceException.class);
-
-        //when
-        mockMvc.perform(get("/api/products/{id}", Long.MAX_VALUE)).andExpect(status().isBadRequest());
-
-        //then
-        verify(productService, times(1)).findById(Long.MAX_VALUE);
-        verifyNoMoreInteractions(productService);
-
     }
 
 }

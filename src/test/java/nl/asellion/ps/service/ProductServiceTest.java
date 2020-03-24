@@ -18,6 +18,8 @@ import nl.asellion.ps.exception.ProductServiceException;
 import nl.asellion.ps.model.Product;
 
 /**
+ * Integration tests for ProductService
+ *
  * @author Alexander Kirillov
  */
 @ExtendWith(SpringExtension.class)
@@ -46,7 +48,7 @@ public class ProductServiceTest {
                 .currentPrice(BigDecimal.valueOf(16.44)).lastUpdate(LocalDateTime.now()).build();
 
         //when
-        final Product actual = productService.findById(1l);
+        final Product actual = productService.findById(1L);
 
         //then
         assertEquals(expected.getId(), actual.getId());

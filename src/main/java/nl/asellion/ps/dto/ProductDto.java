@@ -16,6 +16,8 @@ import lombok.Builder;
 import lombok.Value;
 
 /**
+ * Product Data Transfer Object for successful responses
+ *
  * @author Alexander Kirillov
  */
 
@@ -27,21 +29,21 @@ public class ProductDto {
 
     @NotNull
     @JsonProperty("id")
-    private final Long id;
+    Long id;
 
     @NotNull
     @JsonProperty("name")
-    private final String name;
+    String name;
 
     @NotNull
     @JsonProperty("currentPrice")
-    private final BigDecimal currentPrice;
+    BigDecimal currentPrice;
 
     @NotNull
     @JsonFormat(pattern = PRODUCT_DATE_TIME_PATTERN)
     @JsonProperty("lastUpdate")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private final LocalDateTime lastUpdate;
+    LocalDateTime lastUpdate;
 
 }

@@ -14,6 +14,8 @@ import nl.asellion.ps.dto.ProductDto;
 import nl.asellion.ps.model.Product;
 
 /**
+ * Unit tests for ProductMapper
+ *
  * @author Alexander Kirillov
  */
 
@@ -29,7 +31,7 @@ public class ProductMapperTest {
                 .currentPrice(BigDecimal.valueOf(16.44)).lastUpdate(LocalDateTime.parse("2020-03-24T13:02:56.208835")).build();
 
         //when
-        ProductDto productDto = ProductMapper.INSTANCE.map(expected);
+        ProductDto productDto = ProductMapper.INSTANCE.fromProduct(expected);
 
         //then
         assertThat(productDto).isNotNull();

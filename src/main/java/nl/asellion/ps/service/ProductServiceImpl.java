@@ -13,6 +13,8 @@ import nl.asellion.ps.model.Product;
 import nl.asellion.ps.repository.ProductRepository;
 
 /**
+ * Product service interface implementation
+ *
  * @author Alexander Kirillov
  */
 
@@ -27,17 +29,28 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+
     @Override
     public Product findById(Long id) {
-        final Optional<Product> product = productRepository.findById(id);
-        return product.orElseThrow(() -> new ProductServiceException("Product wasn't found"));
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductServiceException(ProductServiceException.ERROR_PRODUCT_NOT_FOUND));
     }
+
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     public List<Product> findAll() {
-        final List<Product> products = productRepository.findAll();
-        return products;
+        return productRepository.findAll();
     }
+
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -45,11 +58,15 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Product update(Product product) {
         final Optional<Product> foundProductById = productRepository.findById(product.getId());
-        foundProductById.orElseThrow(() -> new ProductServiceException("Product wasn't found"));
+        foundProductById.orElseThrow(() -> new ProductServiceException(ProductServiceException.ERROR_PRODUCT_NOT_FOUND));
 
         final Product productToUpdate = foundProductById.get().toBuilder().name(product.getName())
                 .currentPrice(product.getCurrentPrice()).build();
@@ -60,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long id) {
         final Optional<Product> foundProductById = productRepository.findById(id);
-        foundProductById.orElseThrow(() -> new ProductServiceException("Product wasn't found"));
+        foundProductById.orElseThrow(() -> new ProductServiceException(ProductServiceException.ERROR_PRODUCT_NOT_FOUND));
         productRepository.deleteById(id);
 
     }
