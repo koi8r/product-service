@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,9 +41,8 @@ public class ProductJpaEntity {
     @Column(name = "current_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal currentPrice;
 
-    @NotNull
     @Column(name = "last_update", nullable = false)
-    @UpdateTimestamp
+    @CreationTimestamp
     private LocalDateTime lastUpdate;
 
 }
