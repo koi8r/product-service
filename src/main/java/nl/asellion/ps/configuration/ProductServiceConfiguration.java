@@ -72,7 +72,7 @@ public class ProductServiceConfiguration {
      *
      * @return ApiInfo
      */
-    
+
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Product Service REST API",
