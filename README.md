@@ -187,7 +187,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
 
 ##### Request:
 
-`POST /api/products/{id}`
+`POST /api/products`
 
     curl --location --request POST 'http://localhost:4080/api/products' \
     --header 'Content-Type: application/json' \
