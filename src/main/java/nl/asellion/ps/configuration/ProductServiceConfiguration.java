@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -28,7 +27,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 
 @Configuration
-@ComponentScan("nl.asellion.ps")
 @EnableTransactionManagement
 @EnableSwagger2
 public class ProductServiceConfiguration {
@@ -43,11 +41,6 @@ public class ProductServiceConfiguration {
         return new InMemoryHttpTraceRepository();
     }
 
-    /**
-     * Swagger Docket
-     *
-     * @return
-     */
 
     private final TypeResolver typeResolver;
 
@@ -56,6 +49,11 @@ public class ProductServiceConfiguration {
         this.typeResolver = typeResolver;
     }
 
+    /**
+     * Swagger Docket
+     *
+     * @return Swagger Docket
+     */
 
     @Bean
     public Docket api() {
@@ -69,7 +67,12 @@ public class ProductServiceConfiguration {
                 .apiInfo(apiInfo());
     }
 
-
+    /**
+     * API information
+     *
+     * @return ApiInfo
+     */
+    
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Product Service REST API",
