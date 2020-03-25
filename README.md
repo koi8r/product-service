@@ -44,13 +44,13 @@ Lastly, enjoy! :) Looking forward to your completed assignment.
 
 ## Requirements
 
-Product Service requires Java 11 or later for running locally
-Lombok plugin installed in IDE fot better experience
-Mysql running locally or a mysql docker container
+  * Product Service requires Java 11 or later for running locally
+  * Lombok plugin installed in IDE fot better experience
+  * Mysql running locally or a mysql docker container
 
 ## Using Product Service
-Product Service works in command line builds (plain javac, via Maven) and IDEs.
-For IntelliJ the Lombok plug-in is available within the IntelliJ marketplace (see https://plugins.jetbrains.com/plugin/6317-lombok).
+  * Product Service works in command line builds (plain javac, via Maven) and IDEs.
+  * For IntelliJ the [Lombok plug-in](https://plugins.jetbrains.com/plugin/6317-lombok) is available within the IntelliJ marketplace.
 
 ```
 Go to File > Settings > Plugins
@@ -62,8 +62,8 @@ Restart IntelliJ IDEA
 Make sure that you have at least IntelliJ 2018.2.x (needed since support for `annotationProcessors` from the `maven-compiler-plugin` is from that version).
 Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compiler -> Annotation Processors)`
 ### To start the project please follow the instructions bellow
-  * Install docker: https://docs.docker.com/docker-for-mac/install
-  * Pull the latest docker mysql container: 
+  * [Install docker](https://docs.docker.com/docker-for-mac/install)
+  * Pull the latest docker [mysql container](https://hub.docker.com/_/mysql):
 
         $docker pull mysql
   * Run mysql docker container: 
