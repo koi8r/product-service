@@ -2,6 +2,7 @@
 * [Application requirements](#application-requirements)
 * [Using product service](#using-product-service)
 * [Product Service REST API](#product-service-rest-api)
+* [Security of the API](#security-of-the-api)
 * [Test coverage](#test-coverage)
 * [Api documentation](#api-documentation)
 * [Db migration](#db-migration-was-done-with-help-of-flyway-framework)
@@ -196,8 +197,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
     --data-raw '{
     
         "name": "Apple EarPods 2000",
-        "currentPrice": 16.44,
-        "lastUpdate": "2020-03-25 02:09:01"
+        "currentPrice": 16.44
     }
 
 ##### Successful Response:
@@ -216,7 +216,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
         "timestamp": "2020-03-25 15:08:35",
         "message": "Product can't be created. The name already exists"
     }          
-#### Create a Product:
+#### Delete a Product by product id:
 
 ##### Request:
 
@@ -237,18 +237,46 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
         "message": "Product was not found in the database"
     }
 
+## Security of the API:
+   For accessing API with Postman application you can use Basic Auth with:
+   ```
+    user:user
+    password:password
+   ```
+
 ## Test Coverage:
 
    Test coverage is 96%. The results can be seen in [JoCoCo reports](http://localhost:63342/product-service/target/jacoco-ut/index.html)        
 
 ## API documentation:
     
-   The [documented API](http://localhost:4080/swagger-ui.html) was done by using swagger framework.
+   The [documented API](http://localhost:4080/swagger-ui.html) was done by using swagger framework
   
-## DB migration was done with help of flyway framework:  
-
+## DB migration:  
+   * DB migration was done with help of flyway framework
    * At the first run the product-service application will be created with original database structure
    * At the second time application runs the migration will be triggered
    * Connection to the mysql db could be done by executing following command
 
     $docker run -it --rm mysql mysql -h172.17.0.2 -uuser -p1234
+    
+Results of the migration:
+````
++----+---------------------------+---------------+---------------------+-------------+
+| id | name                      | current_price | last_update         | description |
++----+---------------------------+---------------+---------------------+-------------+
+|  1 | Apple EarPods             |         16.44 | 2020-03-25 15:54:22 | description |
+|  2 | Apple EarPods 2001        |       1005.88 | 2020-03-25 16:12:29 | description |
+|  3 | BenQ TK800M 4K DLP Beamer |       1110.00 | 2020-03-25 15:54:22 | description |
+|  4 | LG PH550G HD Mini Beamer  |        369.00 | 2020-03-25 15:54:22 | description |
+|  5 | Canon EOS 2000D           |        375.99 | 2020-03-25 15:54:22 | description |
++----+---------------------------+---------------+---------------------+-------------+
+````
+````
++----------------+---------+-------------+------+-----------------------+------------+--------------+---------------------+----------------+---------+
+| installed_rank | version | description | type | script                | checksum   | installed_by | installed_on        | execution_time | success |
++----------------+---------+-------------+------+-----------------------+------------+--------------+---------------------+----------------+---------+
+|              1 | 0.0.1   | intialize   | SQL  | V0_0_1__intialize.sql | -100622699 | user         | 2020-03-25 15:54:22 |             98 |       1 |
+|              2 | 0.1.0   | migration   | SQL  | V0_1_0__migration.sql | 1782124245 | user         | 2020-03-25 15:54:22 |             44 |       1 |
++----------------+---------+-------------+------+-----------------------+------------+--------------+---------------------+----------------+---------+
+````
