@@ -1,8 +1,7 @@
 package nl.asellion.ps.service;
 
-import java.util.List;
-
-import nl.asellion.ps.model.Product;
+import nl.asellion.ps.api.dto.ProductDto;
+import nl.asellion.ps.api.dto.ProductsDto;
 
 /**
  * ProductService interface defines all business behavior for Product data manipulation
@@ -11,6 +10,7 @@ import nl.asellion.ps.model.Product;
  */
 
 public interface ProductService {
+
     /**
      * Find a Product object by product id
      *
@@ -18,36 +18,36 @@ public interface ProductService {
      * @return A Product instance or throws ProductServiceException if the product not found
      */
 
-    Product findById(Long id);
+    ProductDto findById(Long id);
 
     /**
      * Find all Product objects
      *
-     * @return A Collection of Product objects
+     * @return A Collection of ProductDto objects
      */
 
-    List<Product> findAll();
+    ProductsDto findAll();
 
     /**
      * Creates a Product object
      *
-     * @param product A product object for creation
-     * @return A created Product object
+     * @param productDto A product object for creation
+     * @return A ProductDto object
      */
-    Product create(Product product);
+    ProductDto create(ProductDto productDto);
 
     /**
      * Updates a Product object
      *
-     * @param product A Product object for updating
-     * @return An updated Product object
+     * @param productDto A Product object for updating
+     * @return An ProductDto object
      */
-    Product update(Product product);
+    ProductDto update(ProductDto productDto, Long id);
 
     /**
      * Deletes a Product object by product id
      *
-     * @param id A Product id as
+     * @param id A Product id
      */
     void delete(Long id);
 }

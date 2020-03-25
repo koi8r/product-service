@@ -1,16 +1,24 @@
 package nl.asellion.ps.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
 import nl.asellion.ps.model.Product;
 
 /**
- * Product repository interface is a Spring Data JPA data repository for Product entities
+ * Product repository interface
  *
  * @author Alexander Kirillov
  */
 
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository {
+
+    Optional<Product> findById(Long id);
+
+    List<Product> findAll();
+
+    Product save(Product product);
+
+    void deleteById(Long id);
+
 }

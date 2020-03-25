@@ -1,20 +1,20 @@
-package nl.asellion.ps.exception;
+package nl.asellion.ps.configuration.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import java.time.LocalDateTime;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.asellion.ps.dto.ErrorDataDto;
+import nl.asellion.ps.api.dto.ErrorDataDto;
 
 /**
  * Handles exceptions in the application
@@ -24,7 +24,8 @@ import nl.asellion.ps.dto.ErrorDataDto;
 
 @Slf4j
 @ControllerAdvice
-public class ProductServiceExceptionHandler extends ResponseEntityExceptionHandler {
+@RequiredArgsConstructor
+public class ProductServiceExceptionHandler {
 
     /**
      * Handles Throwable
@@ -37,16 +38,32 @@ public class ProductServiceExceptionHandler extends ResponseEntityExceptionHandl
     @ResponseBody
     public ResponseEntity<ErrorDataDto> handleHttpServerErrorException(Throwable t) {
         log.error("Internal server error: {}", t.getMessage());
-        final ErrorDataDto error = createAnError(INTERNAL_SERVER_ERROR.value(),
+        final ErrorDataDto error = createAnError(BAD_REQUEST.value(),
                 INTERNAL_SERVER_ERROR.getReasonPhrase());
         return new ResponseEntity<>(error, BAD_REQUEST);
 
     }
 
     /**
+     * Handles all Exceptions not addressed by more specific <code>@ExceptionHandler</code> methods
+     *
+     * @param ex An exception
+     * @return ResponseEntity containing a ErrorDataDto objects
+     */
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDataDto> handleException(Exception ex) {
+        final String message = "Something went wrong, try again later...";
+        final ErrorDataDto error = createAnError(BAD_REQUEST.value(), message);
+        log.error("Error occurred: {}", ex.getMessage());
+        return new ResponseEntity<>(error, BAD_REQUEST);
+    }
+
+    /**
      * Handles HttpServerErrorException
      *
-     * @param ex An exception message
+     * @param ex An exception
      * @return ResponseEntity containing a ErrorDataDto objects
      */
 
@@ -55,10 +72,26 @@ public class ProductServiceExceptionHandler extends ResponseEntityExceptionHandl
     public ResponseEntity<ErrorDataDto> handleHttpServerErrorException(HttpServerErrorException ex) {
         final String code = String.valueOf(ex.getStatusCode().value());
         final String message = ProductServiceException.ERROR_MESSAGE_MAP.get(code);
-        final ErrorDataDto error = createAnError(INTERNAL_SERVER_ERROR.value(), message);
-        log.error("Service is unavailable: {}", message);
+        final ErrorDataDto error = createAnError(BAD_REQUEST.value(), message);
+        log.error("Service is unavailable: {}", ex.getMessage());
         return new ResponseEntity<>(error, BAD_REQUEST);
     }
+
+    /**
+     * Handles ConstraintViolationException
+     *
+     * @param ex An exception
+     * @return A ResponseEntity containing a ErrorDataDto objects
+     */
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorDataDto> handleConstraintViolationException(DataIntegrityViolationException ex) {
+        final String message = ProductServiceException.ERROR_MESSAGE_MAP.get(ProductServiceException.ERROR_UNIQUE_KEY_VIOLATION);
+        final ErrorDataDto error = createAnError(BAD_REQUEST.value(), message);
+        log.error("Service error: {}", ex.getMessage());
+        return new ResponseEntity<>(error, BAD_REQUEST);
+    }
+
 
     /**
      * Handles ProductServiceException
@@ -68,13 +101,12 @@ public class ProductServiceExceptionHandler extends ResponseEntityExceptionHandl
      */
 
     @ExceptionHandler(ProductServiceException.class)
-    @ResponseBody
     public ResponseEntity<ErrorDataDto> handleProductServiceException(ProductServiceException ex) {
         final String code = ex.getMessage();
         final String message = ProductServiceException.ERROR_MESSAGE_MAP.get(code);
-        final ErrorDataDto error = createAnError(NOT_FOUND.value(), message);
+        final ErrorDataDto error = createAnError(BAD_REQUEST.value(), message);
         log.error("Service error: {}", message);
-        return new ResponseEntity<>(error, NOT_FOUND);
+        return new ResponseEntity<>(error, BAD_REQUEST);
     }
 
     /**
