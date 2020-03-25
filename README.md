@@ -247,8 +247,8 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
   
 ## DB migration was done with help of flyway framework:  
 
-   At the first run the product-service application will be created with original database structure
-   At the second time application runs the migration will be triggered
-   Connection to the mysql db could be done by executing following command
+   * At the first run the product-service application will be created with original database structure
+   * At the second time application runs the migration will be triggered
+   * Connection to the mysql db could be done by executing following command
 
     $docker run -it --rm mysql mysql -h172.17.0.2 -uuser -p1234
