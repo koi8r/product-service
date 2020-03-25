@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import nl.asellion.ps.api.dto.ProductDto;
 import nl.asellion.ps.api.dto.ProductsDto;
@@ -26,6 +28,9 @@ import nl.asellion.ps.service.ProductService;
 @Slf4j
 @RestController
 @RequestMapping("/api")
+@ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Correct request"),
+        @ApiResponse(code = 400, message = "Bad Request")})
 public class ProductServiceController {
 
     private final ProductService productService;
