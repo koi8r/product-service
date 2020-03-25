@@ -156,7 +156,6 @@ public class ProductServiceControllerTest {
     @Test
     public void deleteProductById() throws Exception {
         //given
-        final ProductDto requestProductDto = ProductDto.builder().name("Apple EarPods 2019").build();
         doNothing().when(productService).delete(anyLong());
 
         //when
