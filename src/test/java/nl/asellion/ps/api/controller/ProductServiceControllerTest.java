@@ -160,10 +160,7 @@ public class ProductServiceControllerTest {
         doNothing().when(productService).delete(anyLong());
 
         //when
-        mockMvc.perform(delete("/api/products/{id}", 1L)
-                .content(asJsonString(requestProductDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/api/products/{id}", 1L))
                 .andExpect(status().isOk());
 
         //then
