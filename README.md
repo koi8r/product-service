@@ -83,10 +83,10 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
 
          $docker run -p 4080:4080 product-service
          
-###Product Service REST API:       
+### Product Service REST API:       
 #### Get list of Product:
 
-##### Request
+##### Request:
 
 `GET /api/products/`
 
@@ -95,7 +95,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
     --header 'MediaType: application/json' \
     --header 'Authorization: Basic dXNlcjpwYXNzd29yZA=='
 
-##### Response
+##### Response:
     
     {
         "productDtoList": [
@@ -134,7 +134,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
 
 #### Get a Product by product id:
 
-##### Request
+##### Request:
 
 `GET /api/products/{id}`
 
@@ -143,7 +143,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
     --header 'MediaType: application/json' \
     --header 'Authorization: Basic dXNlcjpwYXNzd29yZA=='
 
-##### Response
+##### Response:
     
     {
         "id": 2,
@@ -154,7 +154,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
 
 #### Update a Product by product id:
 
-##### Request
+##### Request:
 
 `PUT /api/products/{id}`
 
@@ -166,7 +166,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
         "name": "Apple EarPods 2001"
     }
 
-##### Successful Response
+##### Successful Response:
     
     {
         "id": 2,
@@ -175,7 +175,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
         "lastUpdate": "2020-03-25 15:03:23"
     }
     
-##### Error Response
+##### Error Response:
     
     {
         "status": 400,
@@ -185,7 +185,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
     
 #### Create a Product:
 
-##### Request
+##### Request:
 
 `POST /api/products/{id}`
 
@@ -200,7 +200,7 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
         "lastUpdate": "2020-03-25 02:09:01"
     }
 
-##### Successful Response
+##### Successful Response:
     
     {
         "id": 8,
@@ -209,27 +209,27 @@ Enable annotation processing in IntelliJ `(Build, Execution, Deployment -> Compi
         "lastUpdate": "2020-03-25 15:07:34"
     }
     
-##### Error Response
+##### Error Response:
     
     {
         "status": 400,
         "timestamp": "2020-03-25 15:08:35",
         "message": "Product can't be created. The name already exists"
     }          
-#### Create a Product
+#### Create a Product:
 
-##### Request
+##### Request:
 
 `DELETE /api/products/{id}`
 
     curl --location --request DELETE 'http://localhost:4080/api/products/8' \
     --header 'Authorization: Basic YWRtaW46cGFzc3dvcmQ='
 
-##### Successful Response
+##### Successful Response:
     
     HTTP/1.1 200
     
-##### Error Response
+##### Error Response:
     
     {
         "status": 400,
